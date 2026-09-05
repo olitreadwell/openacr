@@ -25,7 +25,7 @@
 - open + accepted + unassigned issues we could pick: none maintainer-engaged; #363-367 are documented but unacknowledged
 
 ## Gap ledger (dedupe — READ FIRST, never re-pick)
-- (none yet for this repo)
+- 2026-09-05 pr-opened: `validate`/`output` with `-c <nonexistent-file>` silently skip catalog checks and report `Valid!`/success. Fixed in src/openacr.ts (report `Invalid: catalog file does not exist` when -c file is absent) + regression test. PR https://github.com/olitreadwell/openacr/pull/1 (fork-internal, base=main, head=fix/validate-nonexistent-catalog). Lesson: the fork's `tests` workflow is red on main for pre-existing reasons (outdated caniuse-lite -> browserslist warning breaks librarian-output-cli.test.ts; plus pre-commit cache outage, deprecated upload-artifact v2, a11y browser launch). New test passes (51 passing); do not re-pick this gap.
 
 ## Mined gaps (discovered, not yet attempted)
-- 2026-09-05 clean-code `validate`/`output` with `-c <nonexistent-file>` silently skip catalog checks and report `Valid!`/success (repro: `npx ts-node src/openacr.ts validate -f tests/examples/valid.yaml -c /nonexistent/catalog.yaml` -> `Valid!`, exit 0). Expected: error that the catalog file does not exist. Dedupe: no upstream issue/PR covers the nonexistent-`-c` case (#363 covers omitting `-c`; #365 covers exit status). — status: proposed
+- 2026-09-05 clean-code `validate`/`output` with `-c <nonexistent-file>` silently skip catalog checks and report `Valid!`/success (repro: `npx ts-node src/openacr.ts validate -f tests/examples/valid.yaml -c /nonexistent/catalog.yaml` -> `Valid!`, exit 0). Expected: error that the catalog file does not exist. Dedupe: no upstream issue/PR covers the nonexistent-`-c` case (#363 covers omitting `-c`; #365 covers exit status). — status: pr-opened (2026-09-05, PR #1)
