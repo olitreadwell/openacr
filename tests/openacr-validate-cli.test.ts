@@ -447,4 +447,34 @@ describe("OpenACR CLI test validation", () => {
       expect(output).to.equal("Valid!\n");
     });
   });
+
+  it("when passed a catalog file that does not exist should return invalid message", function () {
+    this.timeout(60000);
+    return new Promise((resolve, reject) => {
+      const invalid = spawn(
+        cmd,
+        options.concat(
+          "tests/examples/valid.yaml",
+          "-c",
+          "tests/examples/does-not-exist.yaml"
+        )
+      );
+      const chunks = [];
+
+      invalid.stderr.on("data", (chunk) => {
+        chunks.push(chunk);
+      });
+
+      invalid.stderr.on("end", () => {
+        const output = Buffer.concat(chunks).toString();
+
+        try {
+          expect(output).to.equal("Invalid: catalog file does not exist\n");
+          resolve();
+        } catch (e) {
+          reject(e);
+        }
+      });
+    });
+  });
 });
