@@ -77,15 +77,22 @@ if (fs.existsSync(argv.file)) {
     result = validateOpenACR(data, schema);
     let catalog: any;
     // Validate OpenACR against provided catalog.
-    if (result.result && argv.catalogFile && fs.existsSync(argv.catalogFile)) {
-      try {
-        catalog = yaml.load(fs.readFileSync(argv.catalogFile).toString());
-        result = validateOpenACRCatalogValues(data, catalog);
-      } catch {
+    if (result.result && argv.catalogFile) {
+      if (!fs.existsSync(argv.catalogFile)) {
         result = {
           result: false,
-          message: "Invalid: catalog file is not in YAML format",
+          message: "Invalid: catalog file does not exist",
         };
+      } else {
+        try {
+          catalog = yaml.load(fs.readFileSync(argv.catalogFile).toString());
+          result = validateOpenACRCatalogValues(data, catalog);
+        } catch {
+          result = {
+            result: false,
+            message: "Invalid: catalog file is not in YAML format",
+          };
+        }
       }
     }
 
